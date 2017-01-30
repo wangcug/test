@@ -1,0 +1,60 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
+    
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">  
+    <title>Map with WMS</title>  
+  
+    <link rel="stylesheet" href="http://js.arcgis.com/3.9/js/dojo/dijit/themes/claro/claro.css">  
+    <link rel="stylesheet" href="http://js.arcgis.com/3.9/js/esri/css/esri.css">  
+    <style>   
+        html, body, #map {  
+            height: 100%;  
+            width: 100%;  
+            margin: 0;  
+            padding: 0;  
+        }  
+        body {  
+            background-color: #FFF;  
+            overflow: hidden;  
+            font-family: "Trebuchet MS";  
+        }  
+    </style> 
+    <script src="http://js.arcgis.com/3.9/"></script>  
+    <script>
+    require(["esri/map","esri/geometry/Extent","esri/layers/WMSLayer","esri/layers/WMSLayerInfo","dojo/domReady!"],
+          function(Map,Extent,WMSLayer,WMSLayerInfo){
+          	var map = new Map("map",{
+          		basemap:"streets",
+          		center:[-114,44],
+          		zoom:6
+          	});
+    var wmsLayer = new WMSLayer("https://mrdata.usgs.gov/services/id?",{
+    	format:"png",
+    	resourceInfo:{
+    		extent:new Extent(-117.3,41.9,-111,49.1,{wkid:4326}),
+    		 getMapURL:"https://mrdata.usgs.gov/services/id?",
+    		layerInfos:[
+    		new WMSLayerInfo({
+    			name:"Idaho geo",
+    			queryable:true,
+    		})] ,
+    		spatialReferences:[4326] ,
+    		version:"1.1.1"  	},
+    		visibleLayers:["Idaho_Lithology"]
+    });
+    wmsLayer.on("error", function (response){
+      console.log("Error: %s", response.error.message);
+    });
+    map.addLayer(wmsLayer);
+          }
+    	)
+     </script>  
+</head>  
+  
+<body>  
+<div id="map">  
+</div>  
+</body>  
+</html>
