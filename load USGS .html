@@ -2,7 +2,8 @@
 <html>  
 <head>  
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
-    
+    <!--The viewport meta tag is used to improve the presentation and behavior of the samples  
+       on iOS devices-->  
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">  
     <title>Map with WMS</title>  
   
@@ -27,27 +28,23 @@
         var map;  
   
         require(["esri/map", "esri/layers/WMSLayer", "esri/config","esri/layers/WMSLayerInfo","esri/geometry/Extent","esri/layers/FeatureLayer"],  
-                function(Map, WMSLayer, esriConfig, WMSLayerInfo,Extent,/*FeatureLayer,*/parser) {  
+                function(Map, WMSLayer, esriConfig, WMSLayerInfo,Extent,FeatureLayer,parser) {  
   
                     map = new Map("map", {  
                       extent: new Extent({xmin:-117.3,ymin:41.9,xmax:-111,ymax:49.1,spatialReference:{wkid:4326}}),  
-                           zoom: 8,  
-                           center:[-114,44],
-                         //transparent: true,
-                        basemap: "streets"  
-                       
+                        zoom: 6,  
 
+                        basemap: "streets"  
                     });  
   
-                    //addNorway(WMSLayer,WMSLayerInfo,Extent);  
+                    
                     addBGS(WMSLayer,WMSLayerInfo,Extent);  
                 });  
   
   
   
-        function addBGS(WMSLayer,WMSLayerInfo,Extent){  
-
-          var layerInfo = new WMSLayerInfo({name:"GBR_BGS_625k_BLS",title:"GBR BGS 1:625k Bedrock Lithology"});  
+       function addBGS(WMSLayer,WMSLayerInfo,Extent,lang){  
+            var layerInfo = new WMSLayerInfo({name:"GBR_BGS_625k_BLS",title:"GBR BGS 1:625k Bedrock Lithology"});  
   
             var resourceInfo = {  
                 extent: new Extent(-117.3,41.9,-111,49.1,{wkid: 4326}),  
@@ -60,32 +57,12 @@
                     }  
             );  
   
-           wmsLayer.spatialReferences[0] = 4326;  
+           wmsLayer.spatialReferences[0] = 3857;  
             map.addLayer(wmsLayer);  
-
-
-
-            /*var layer20 = new WMSLayerInfo({name:"GBR_BGS_625k_BLS",title:"GBR BGS 1:625k Bedrock Lithology"});  
+        }   ;
   
-            var resourceInfo20 = {  
-                extent: new Extent(-117.3,41.9,-111,49.1,{wkid: 4326
-                }),  
-                layerInfos: []  
-            };  
-            var wmsLayer20 = new WMSLayer("https://mrdata.usgs.gov/services/id?",  
-                    {  
-                        resourceInfo: resourceInfo20,  
-                        transparent: true,
-                        visibleLayers: ["Idaho_Lithology"]  
-                    }  
-            );  
-            wmsLayer.spatialReferences[0] = 4326;
-            map.addLayers([wmsLayer20]);  
-            wmsLayer20.setVisibility(true);  */
-  
-        };  
-
         
+  
   
     </script>  
 </head>  
@@ -94,4 +71,4 @@
 <div id="map">  
 </div>  
 </body>  
-</html>
+</html>  
