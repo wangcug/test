@@ -32,7 +32,7 @@
   
                     map = new Map("map", {  
                       extent: new Extent({xmin:-117.3,ymin:41.9,xmax:-111,ymax:49.1,spatialReference:{wkid:4326}}),  
-                        zoom: 6,  
+                        zoom:3,  
 
                         basemap: "streets"  
                     });  
@@ -50,14 +50,15 @@
                 extent: new Extent(-117.3,41.9,-111,49.1,{wkid: 4326}),  
                 layerInfos: [layerInfo]  
             };  
-            var wmsLayer = new WMSLayer("https://mrdata.usgs.gov/services/id?",  
+            var wmsLayer = new WMSLayer("http://mrdata.usgs.gov/services/kb?"/*https://mrdata.usgs.gov/services/id?"*/,  
                     {  
                         resourceInfo: resourceInfo,  
-                        visibleLayers: ["Idaho_Lithology"]  
+                        visibleLayers:["KB_Geology"],//["Idaho_Lithology"] ,
+                        opacity:1
                     }  
             );  
   
-           wmsLayer.spatialReferences[0] = 3857;  
+           wmsLayer.spatialReferences[0] =3857;  
             map.addLayer(wmsLayer);  
         }   ;
   
