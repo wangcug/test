@@ -2,8 +2,7 @@
 <html>  
 <head>  
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
-    <!--The viewport meta tag is used to improve the presentation and behavior of the samples  
-       on iOS devices-->  
+
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">  
     <title>Map with WMS</title>  
   
@@ -32,7 +31,7 @@
   
                     map = new Map("map", {  
                       extent: new Extent({xmin:-117.3,ymin:41.9,xmax:-111,ymax:49.1,spatialReference:{wkid:4326}}),  
-                        zoom:3,  
+                        zoom:6,  
 
                         basemap: "streets"  
                     });  
@@ -50,11 +49,11 @@
                 extent: new Extent(-117.3,41.9,-111,49.1,{wkid: 4326}),  
                 layerInfos: [layerInfo]  
             };  
-            var wmsLayer = new WMSLayer("http://mrdata.usgs.gov/services/kb?"/*https://mrdata.usgs.gov/services/id?"*/,  
+            var wmsLayer = new WMSLayer("https://mrdata.usgs.gov/services/id?",  
                     {  
                         resourceInfo: resourceInfo,  
-                        visibleLayers:["KB_Geology"],//["Idaho_Lithology"] ,
-                        opacity:1
+                        visibleLayers:["Idaho_Lithology"] ,
+                        opacity:0.7
                     }  
             );  
   
