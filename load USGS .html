@@ -37,12 +37,44 @@
                     });  
   
                     
-                    addBGS(WMSLayer,WMSLayerInfo,Extent);  
-                });  
+                   // addBGS(WMSLayer,WMSLayerInfo,Extent);  
+               // });  
   
+           var wmsLayer = new WMSLayer("https://mrdata.usgs.gov/services/id?", {
+            format:"image/png",
+            resourceInfo:{
+             copyright:"USGS",
+             description:"Idaho_Lithology",
+             extent: new Extent(-117.3,41.9,-111,49.1,{wkid:4326}),
+             featureInfoFormat: "text/html",
+             getFeatureInfoURL:"https://mrdata.usgs.gov/services/id?",
+             getMapURl:"https://mrdata.usgs.gov/services/id?",
+             LayerInfos:[
+             new WMSLayerInfo({
+             name:"Idaho_Geology:Idaho_Lithology",
+             queryable: true,
+             showPopup: true
+         })
+
+             ],
+             spatialReferences:[3857],
+             version:"1.1.1"
+            },
+            version:"1.1.1",
+            visibleLayers:[
+            "Idaho_Lithology"
+            ]
+
+  });
+wmsLayer.on("error", function (response){
+      console.log("Error: %s", response.error.message);
+    });
+    map.addLayer(wmsLayer);
+  });
+
+
   
-  
-       function addBGS(WMSLayer,WMSLayerInfo,Extent,lang){  
+     /*  function addBGS(WMSLayer,WMSLayerInfo,Extent,lang){  
             var layerInfo = new WMSLayerInfo({name:"GBR_BGS_625k_BLS",title:"GBR BGS 1:625k Bedrock Lithology"});  
   
             var resourceInfo = {  
@@ -60,7 +92,7 @@
            wmsLayer.spatialReferences[0] =3857;  
             map.addLayer(wmsLayer);  
         }   ;
-  
+  */
         
   
   
