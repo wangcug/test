@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Get data form the PBDB</title>
+	<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+       <script type="text/javascript">
+       $.getJSON("https://paleobiodb.org/data1.2/occs/single.json?",{id:1001},function (data, textStatus,jqXHR)
+       {
+       	for (var i = data.records.length - 1; i >= 0; i--) {
+       		var obj=data.records[i]
+       	}
+       	alert(obj.oei);
+       	alert(data.elapsed_time);
+       })
+       </script>
+</head>
+<body>
+
+</body>
+</html>
