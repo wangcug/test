@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
     
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">  
-    <title>Map with WMS</title>  
+    <title>Geological Map and Query from USGS</title>  
 <link rel="stylesheet" href="https://js.arcgis.com/3.19/dijit/themes/tundra/tundra.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
     <style>   
@@ -52,7 +52,8 @@
            		version:"1.3.0"  	
             },
               version:"1.3.0",
-           		visibleLayers:["Idaho_Lithology","Idaho_Faults"]   // The overlay order:Lithology(base)->Faults(top)
+           		visibleLayers:["Idaho_Lithology","Idaho_Faults"],   // The overlay order:Lithology(base)->Faults(top)
+              opacity:0.6
            });
           // console.log(wmsLayer);
 
