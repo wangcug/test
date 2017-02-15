@@ -1,0 +1,217 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
+    
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">  
+    <title>Geological Map and Query from USGS</title>  
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+<link rel="stylesheet" href="https://js.arcgis.com/3.19/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+    <style>   
+        html, body, #map {  
+            height: 94%;  
+            width: 100%;  
+            margin: 0;  
+            padding: 0;  
+        }  
+        body {  
+            background-color: #FFF;  
+            overflow: hidden;  
+            font-family: "Trebuchet MS";  
+        }  
+    </style> 
+    <script src="http://js.arcgis.com/3.19/"></script>  
+<script>
+var map;
+    require(["esri/map","esri/geometry/Extent","esri/layers/WMSLayer","esri/layers/WMSLayerInfo","esri/graphic","dojo/domReady!"],
+          function(Map,Extent,WMSLayer,WMSLayerInfo,Graphic){
+
+    //var map;
+  // require(["esri/map","esri/graphic","esri/geometry/Extent","esri/layers/WMSLayer","esri/layers/WMSLayerInfo","dojo/domReady!"],
+   // function(Map,SimpleMarkerSymbol,SimpleLineSymbol, Color,Extent,WMSLayer,WMSLayerInfo) {  
+           var map = new Map("map",{  
+                basemap: "streets",  
+                center: [-114, 44],  
+                zoom: 7 ,
+               //isDoubleClickZoom:false
+                //smartNavigation: false
+            });  
+
+var timeinterval = "Permian";  //In the following work, change it as a function to request from the timechart
+        var locationURL="https://paleobiodb.org/data1.1/colls/summary.json?lngmin=-125&lngmax=-60&latmin=25&latmax=50&limit=all&show=time&level=3";
+        locationURL += "&"+"interval="+timeinterval
+       
+       var result;
+     //$(document).ready(function(){
+        $.ajax({
+         type:'get',
+         url:locationURL,
+         dataType:'json',
+         async:false,
+         success:function(data){
+            result = data.records; //get the information from PBDB{"oid","typ","nco","noc","lng","lat","eag","lag","cxi","ein","lin"},
+           // console.log(2);
+
+        }
+    });
+
+
+
+
+
+
+
+
+  var mypoints= result.map(function(x){
+       return [x.lng,x.lat];
+  });
+  var oid=result.map(function(x){
+    return [x.oid];
+  });
+//console.log(oid);
+//console.log(points[1]);
+
+for(i=0; i<result.length-1;i++){
+      // console.log(result[i].lat)
+var myPoint = {
+       "geometry":{
+              "x":result[i].lng,
+              "y":result[i].lat,
+             // "points":mypoints,
+        
+        "spatialReference":{"wkid":4326}
+        },
+        "attributes":{
+           //"XCoord":-104.4140625,
+           //"YCoord":69.2578125,
+            "oid":result[i].oid,
+            "eag":result[i].eag,
+            "lag":result[i].lag
+        },
+        "symbol":{
+              "color":[0,0,0,64],
+              "size":10,
+
+              "angle":0,
+              "xoffset":0,
+              "yoffset":0,
+              "type":"esriSMS",
+              "style":"esriSMSCircle",
+              "outline":{
+                  "color":[0,0,0,255],
+                  "width":1,
+                  "type":"esriSLS",
+                  "style":"esriSLSSolid"
+        }
+    },
+        "infoTemplate":{
+           "title":"Vernal Pool Locations",
+           "content":"oid:${oid}<br/>Base Age:${eag}<br/>Top Age:${lag}"
+           //"Latitude: ${YCoord}<br/>Longitude: ${XCoord}<br/>Plant Name:${Plant}"
+    }
+};
+
+     var gra= new esri.Graphic(myPoint);
+      //map.addLayer(gra);
+   map.graphics.add(gra);  
+     // dojo.connect(map, "onLoad", function() {  
+    //  map.graphics.add(gra);  
+    // });  
+};
+
+
+function showInfoWindow(evt){
+   evt.stopPropagation();
+   
+
+   //事件处理
+
+ };
+ 
+
+ var wmsLayer = new WMSLayer("https://mrdata.usgs.gov/services/id?",{
+      format:"png",
+      resourceInfo:{
+            copyright:"USGS",
+             description:"Idaho_Lithology",
+             extent:new Extent(-117.3,41.9,-111,49.1,{wkid:4326}),
+             featureInfoFormat: "text/html",
+             getFeatureInfo:"https://mrdata.usgs.gov/services/id?",
+             getMapURL:"https://mrdata.usgs.gov/services/id?",
+            layerInfos:[
+              new WMSLayerInfo({
+                name:"Idaho geo",
+                queryable:true,
+                showPopup: true
+              })] ,
+              spatialReferences:[3857] ,
+              version:"1.3.0"   
+            },
+              version:"1.3.0",
+              visibleLayers:["Idaho_Lithology","Idaho_Faults"],   // The overlay order:Lithology(base)->Faults(top)
+              opacity:0.6
+           });
+          // console.log(wmsLayer);
+
+          /* wmsLayer.on("error", function (response){
+             console.log("Error: %s", response.error.message);
+           });*/
+           map.addLayer(wmsLayer);
+
+        map.on("load", function(){
+            map.infoWindow.resize(500,250);
+          });
+       
+       map.on("dblclick",getgeoinfo);
+
+
+         // use function to getFeatureInnfo from USGS
+        function getgeoinfo (event){
+          long=event.mapPoint.x;
+          lat=event.mapPoint.y;
+          console.log(long,lat);
+          var bbox = long.toString()+","+lat.toString()+","+(long+0.0000001).toString()+","+(lat+0.0000001).toString();
+          //console.log(bbox);
+          var infoURL="https://mrdata.usgs.gov/services/id?service=WMS&request=GetFeatureInfo&VERSION=1.1.1&format=image/png&layers=Idaho_Lithology&query_layers=Idaho_Lithology&SRS=EPSG:3857&info_format=text/html&exception=text/xml&x=0&y=0&radius=0";
+          infoURL += "&"+"bbox="+bbox+"&WIDTH=500&HEIGHT=250&styles=default"
+         // console.log(infoURL);
+          //alert(infoURL);
+
+
+          map.infoWindow.setTitle("Geology Information");
+          map.infoWindow.setContent("<iframe onload=getInfoWindowWMSContent(); id='wmsFeatureInfo' name='wmsFeatureInfo' width='600' height='300' frameBorder='0' src='" + infoURL + "'>Cannot get WMS feature info for the clicked point.</iframe> ");
+
+          map.infoWindow.show(event.mapPoint, map.getInfoWindowAnchor(event.screenPoint));
+         };
+
+
+
+
+
+     
+
+   // for(var i=0; i<result.length - 1; i++){
+       //var lat=[],
+      // c=[][],
+     //    lng=[];
+      // lat=result[i].lat;
+      // lng=result[i].lng
+       //c=[lat[i],lng[i]];
+      // console.log(c);
+    // change the lat lng to ghe Gauss coordinate(?)
+
+  //} 
+
+
+
+
+
+})
+       </script>
+</head>
+<body>
+<div id="map">  
+</div> 
+</body>
+</html>
