@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+$.ajax({url:'https://mrdata.usgs.gov/services/id?service=WMS&request=GetFeatureInfo&VERSION=1.1.1&format=image/png&layers=Idaho_Lithology&query_layers=Idaho_Lithology&SRS=EPSG:3857&info_format=text/html&exception=text/xml&x=0&y=0&radius=0&bbox=-12566899.712724162,5403681.06446823,-12566899.712724062,5403681.06446833&WIDTH=500&HEIGHT=250&styles=default',success:function(data){
+	var str =  data;
+	var Unitname = $(str).find('tbody>tr>td>a').html();
+	var Unitage = $(str).find('tbody>tr>td:eq(1)').html();
+    var primary = $(str).find('tbody>tr>td>a:eq(1)').html();
+	var secondary = $(str).find('tbody>tr>td>a:last').html();
+	var source = $(str).find('tbody>tr>td:last').html();
+	console.log(source,Unitname,Unitage,primary ,secondary)
+}});
+
+</script>
+</body>
+</html>
