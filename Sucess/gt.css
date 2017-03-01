@@ -1,0 +1,19 @@
+
+#vis{
+width:100%;
+}
+.node {
+
+  fill: #ddd;
+  stroke: #fff;
+}
+
+.label {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+svg{
+	width:100%;
+}
+  
+ 
