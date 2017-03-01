@@ -1,0 +1,58 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
+    
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">  
+    <title>Ontology-Driven Data Integration and Visualization for Exploring Regional Geological Time and Paleontological Information</title>  
+<link href="gt.css" rel="stylesheet"> 
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+<link rel="stylesheet" href="https://js.arcgis.com/3.19/dijit/themes/tundra/tundra.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.19/esri/css/esri.css">
+    <style>   
+       body, #map {  
+            height: 500px;  
+            width: 100%;  
+            margin: 0;  
+            padding: 0;  
+        }  
+        body {  
+            background-color: #FFF;  
+            overflow: hidden;  
+            font-family: "Trebuchet MS";  
+        }
+        #OPTION{
+          border: : black solid thin;
+          outline-style:solid;
+          outline-width:2px;
+          font-weight:normal;
+          font-family: Georgia;
+         	height: 50px;  
+            width: 80px;
+            position:absolute; right:20px; top:20px; background:#FF0;
+            z-index:20;
+        }
+    </style> 
+    <script src="d3.v3.min.js"></script>
+    <div id="vis" style="position: absolute; left:0; top:79%; width:100%; ">
+ </div>
+    <script src="http://js.arcgis.com/3.19/"></script>  
+   <script language="javascript" src="pbdbusgs.js">  </script>
+<script language="javascript" src="gt.js">  </script>
+
+  
+
+</head>
+<body onload="initMap()">
+<div id="map" > 
+	<div id="OPTION">
+		<form method="post" name="form1">
+			<input type="radio" name="pt" value="a"  onclick="changeLayer('USGS')">USGS<br>
+			<input type="radio" name="pt" value="b" checked onclick="changeLayer('Foss')">Fossil
+		</form> 
+	</div>
+</div> 
+</body>
+</html>
