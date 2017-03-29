@@ -1,0 +1,10 @@
+{
+	"@context"
+	{
+	   "name": "http://www.w3.org/2000/01/rdf-schema#label",
+	   "rank": "http://resource.geosciml.org/ontology/timescale/gts#rank",
+	   "colour": "http://schema.org/color",
+	   "base": "http://resource.geosciml.org/ontology/timescale/thors#thros",
+	   "top": "http://resource.geosciml.org/ontology/timescale/thors#end"
+	}
+}
